@@ -7,11 +7,11 @@ Sandcat agents can use SSH tunneling to tunnel C2 contact mechanisms, namely HTT
 
 ### Usage - Serverside
 Within the CALDERA configuration file, adjust the following entries according to your environment:
-- `app.contact.tunnel.ssh.host_key_file`: File name for the server's SSH private host key. You can generate your own SSH private host key for the CALDERA server. The file must reside in the `conf/ssh_keys` directory. If the CALDERA server cannot find or read the provided private host key, it will generate a temporary RSA host key to use for operations. Although this would cause security warnings under normal circumstances, the sandcat agent implementation of SSH tunneling does not attempt to verify hosts, and thus should not be affected by changing or temporary host keys.
-- `app.contact.tunnel.ssh.host_key_passphrase`: Passphrase for the server's SSH private host key. The server will use this passphrase to read the private host key file provided in `app.contact.tunnel.ssh.host_key_file`.
-- `app.contact.tunnel.ssh.socket`: Indicates the IP address and port that the CALDERA server will listen on for SSH tunneling connections (e.g. `0.0.0.0:8022`).
-- `app.contact.tunnel.ssh.user_name`: User name that agents will use to authenticate to the CALDERA server via SSH. The default value is `sandcat`.
-- `app.contact.tunnel.ssh.user_password`: Password that agents will use to authenticate to the CALDERA server via SSH. The default value is `s4ndc4t!`.
+    - `app.contact.tunnel.ssh.host_key_file`: File name for the server's SSH private host key. You can generate your own SSH private host key for the CALDERA server. The file must reside in the `conf/ssh_keys` directory. If the CALDERA server cannot find or read the provided private host key, it will generate a temporary RSA host key to use for operations. Although this would cause security warnings under normal circumstances, the sandcat agent implementation of SSH tunneling does not attempt to verify hosts, and thus should not be affected by changing or temporary host keys.
+    - `app.contact.tunnel.ssh.host_key_passphrase`: Passphrase for the server's SSH private host key. The server will use this passphrase to read the private host key file provided in `app.contact.tunnel.ssh.host_key_file`.
+    - `app.contact.tunnel.ssh.socket`: Indicates the IP address and port that the CALDERA server will listen on for SSH tunneling connections (e.g. `0.0.0.0:8022`).
+    - `app.contact.tunnel.ssh.user_name`: User name that agents will use to authenticate to the CALDERA server via SSH. The default value is `sandcat`.
+    - `app.contact.tunnel.ssh.user_password`: Password that agents will use to authenticate to the CALDERA server via SSH. The default value is `s4ndc4t!`.
 
 Once the configuration entries are set, simply start the CALDERA server up as normal via the `server.py` Python program, and CALDERA will automatically attempt to start an SSH server that listens on the specified socket (`app.contact.tunnel.ssh.socket`). 
 
@@ -21,11 +21,11 @@ The SSH server should only be used between agents and the C2 server and should n
 
 ### Usage - Agent
 The sandcat agent is currently the only agent that supports SSH tunneling. To use it, the `server`, `tunnelProtocol`, `tunnelAddr`, `tunnelUser`, and `tunnelPassword` arguments must be used. 
-- `server` value is the CALDERA server endpoint that the tunnel will connect to - if the agent is tunneling HTTP communications through SSH, then `server` should be the HTTP socket for the CALDERA C2 server (e.g. `http://10.10.10.15:8888`). 
-- `tunnelProtocol` value is the name of the tunneling mechanism that the agent is using. For SSH, the value must be `SSH`. 
-- `tunnelAddr` is the port number or IP:port combination that indicates which port or socket to connect to via SSH to start the tunnel (e.g. `8022` or `10.10.10.15:8022`). If only a port number is provided, the agent will try to connect to the IP address from `server` using the specified port. The server listening on the port/socket should be listening for SSH connections from agents.
-- `tunnelUser` indicates which username to use to authenticate to `tunnelAddr` via SSH. This username should match the CALDERA configuration value for `app.contact.tunnel.ssh.user_name`.
-- `tunnelPassword` indicates which password to use to authenticate to
+    - `server` value is the CALDERA server endpoint that the tunnel will connect to - if the agent is tunneling HTTP communications through SSH, then `server` should be the HTTP socket for the CALDERA C2 server (e.g. `http://10.10.10.15:8888`). 
+    - `tunnelProtocol` value is the name of the tunneling mechanism that the agent is using. For SSH, the value must be `SSH`. 
+    - `tunnelAddr` is the port number or IP:port combination that indicates which port or socket to connect to via SSH to start the tunnel (e.g. `8022` or `10.10.10.15:8022`). If only a port number is provided, the agent will try to connect to the IP address from `server` using the specified port. The server listening on the port/socket should be listening for SSH connections from agents.
+    - `tunnelUser` indicates which username to use to authenticate to `tunnelAddr` via SSH. This username should match the CALDERA configuration value for `app.contact.tunnel.ssh.user_name`.
+    - `tunnelPassword` indicates which password to use to authenticate to
 `tunnelAddr` via SSH. This password should match the CALDERA configuration value for `app.contact.tunnel.ssh.user_password`.
 
 To tunnel different contacts through SSH tunneling, simply adjust the `c2` and `server` values as needed.
